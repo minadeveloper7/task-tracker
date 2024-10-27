@@ -18,6 +18,14 @@ public class Main {
                 break;
             case "update":
                 break;
+            case "delete":
+                break;
+            case "mark-done":
+                break;
+            case "mark-in-progress":
+                break;
+            default:
+                System.out.println("Invalid command: " + command);
         }
 
     }
