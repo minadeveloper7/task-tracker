@@ -63,8 +63,9 @@ public class TaskManager {
     private void writeTasksToFile() {
         try(FileWriter fileWriter = new FileWriter(FILE_PATH)) {
             gson.toJson(tasks, fileWriter);
+            logger.info("Tasks written to file.");
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            logger.severe("Error writing tasks to file: " + ex.getMessage());
         }
     }
 
@@ -75,17 +76,26 @@ public class TaskManager {
 
     public List<Task> getTasksStatusDone() {
         logger.info("Reading all tasks from file with the status: DONE");
-        return tasks.stream().filter(task -> task.getStatus() == Status.DONE).toList();
+        return tasks
+                .stream()
+                .filter(task -> task.getStatus() == Status.DONE)
+                .toList();
     }
 
     public List<Task> getTasksStatusInProgress() {
         logger.info("Reading all tasks from file with the status: IN_PROGRESS");
-        return tasks.stream().filter(task -> task.getStatus() == Status.IN_PROGRESS).toList();
+        return tasks
+                .stream()
+                .filter(task -> task.getStatus() == Status.IN_PROGRESS)
+                .toList();
     }
 
     public List<Task> getTasksStatusToDo() {
         logger.info("Reading all tasks from file with the status: TODO");
-        return tasks.stream().filter(task -> task.getStatus() == Status.DONE).toList();
+        return tasks
+                .stream()
+                .filter(task -> task.getStatus() == Status.DONE)
+                .toList();
     }
 
     private List<Task> readTasksFromFile() {
@@ -95,9 +105,19 @@ public class TaskManager {
             logger.info("Loaded tasks from file.");
             return tasks;
         } catch (IOException ex) {
-            logger.severe("Error reading tasks from file: " + ex.getMessage());
+            logger.severe(
+                    "Error reading tasks from file: " + ex.getMessage()
+            );
             return new ArrayList<>();
         }
+    }
+
+    public void markDone(int id) {
+
+    }
+
+    public void markInProgress(int id) {
+
     }
 
 }

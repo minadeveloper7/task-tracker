@@ -1,5 +1,9 @@
 package dev.misu;
 
+import dev.misu.entities.Task;
+import dev.misu.service.TaskManager;
+
+import java.util.List;
 import java.util.Objects;
 
 public class Main {
@@ -10,23 +14,95 @@ public class Main {
             System.out.println("Error - not supported input!");
             return;
         }
+        TaskManager taskManager = new TaskManager();
 
         switch (command) {
             case "list":
+                String status = args[1];
+                switch (status) {
+                    case "todo":
+                        List<Task> tasksToDo = taskManager.getTasksStatusToDo();
+                        printTasks(tasksToDo);
+                        break;
+                    case "in-progress":
+                        List<Task> tasksInProgress = taskManager.getTasksStatusInProgress();
+                        printTasks(tasksInProgress);
+                        break;
+                    case "done":
+                        List<Task> tasksDone = taskManager.getTasksStatusDone();
+                        printTasks(tasksDone);
+                        break;
+                    default:
+                        System.out.println(
+                                "Invalid option! Options {todo, in-progress, done}"
+                        );
+                }
                 break;
             case "add":
+                if (!args[2].isEmpty()) {
+                    Task task = new Task(args[2]);
+                    taskManager.add(task);
+                    System.out.println(task);
+                } else {
+                    System.out.println("Error - you forgot to input the task!");
+                }
                 break;
             case "update":
+                if (isNumeric(args[2])) {
+
+                    if (!args[3].isEmpty()) {
+                        taskManager.update(Integer.parseInt(args[2]), args[3]);
+                        System.out.printf("Task with id %d is updated!", Integer.parseInt(args[2]));
+                    }
+
+                } else {
+                    System.out.println("Please enter valid task id!");
+                }
                 break;
             case "delete":
+                if (isNumeric(args[1])) {
+                    taskManager.deleteTask(Integer.parseInt(args[1]));
+                    System.out.printf("Task with id of %d is deleted!", Integer.parseInt(args[1]));
+                } else {
+                    System.out.println("Enter valid task id!");
+                }
                 break;
             case "mark-done":
+                if (isNumeric(args[1])) {
+                    taskManager.markDone(Integer.parseInt(args[1]));
+                } else {
+                    System.out.println("Enter valid task id!");
+                }
                 break;
             case "mark-in-progress":
+                if (isNumeric(args[1])) {
+                    taskManager.markInProgress(Integer.parseInt(args[1]));
+                } else {
+                    System.out.println("Enter valid task id!");
+                }
                 break;
             default:
                 System.out.println("Invalid command: " + command);
         }
 
     }
+
+    private static void printTasks(List<Task> tasks) {
+        for (Task task: tasks) {
+            System.out.println(task.toString());
+        }
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
 }
