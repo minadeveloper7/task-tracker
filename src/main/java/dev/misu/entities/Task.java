@@ -25,11 +25,14 @@ public class Task {
     private Timestamp updatedAt;
 
     public Task(String description) {
-        this.id = count++;
         this.status = Status.TODO;
         this.description = description;
         this.createdAt = new Timestamp(System.currentTimeMillis());
         this.updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setDescription(String description) {

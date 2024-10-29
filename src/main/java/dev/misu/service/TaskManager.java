@@ -13,21 +13,25 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class TaskManager {
 
-    private static final String FILE_PATH = "dev/misu/data/database.json";
+    private static final String FILE_PATH = "/Users/misu/Documents/github/task-tracker/src/main/java/dev/misu/data/database.json";
     private static final Logger logger = TaskLogger.getLogger();
     private Gson gson;
     private List<Task> tasks;
+    private static int count;
 
     public TaskManager() {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.tasks = readTasksFromFile();
+        count = tasks.stream().mapToInt(Task::getId).max().orElse(0) + 1;
     }
 
     public void add(Task task) {
+        task.setId(count);
         tasks.add(task);
         writeTasksToFile();
         logger.info("Added task with id: " + task.getId());
@@ -94,7 +98,7 @@ public class TaskManager {
         logger.info("Reading all tasks from file with the status: TODO");
         return tasks
                 .stream()
-                .filter(task -> task.getStatus() == Status.DONE)
+                .filter(task -> task.getStatus() == Status.TODO)
                 .toList();
     }
 
@@ -102,6 +106,11 @@ public class TaskManager {
         try(FileReader fileReader = new FileReader(FILE_PATH)) {
             Type taskType = new TypeToken<ArrayList<Task>>(){}.getType();
             List<Task> tasks = gson.fromJson(fileReader, taskType);
+
+            if (tasks == null) {
+                tasks = new ArrayList<>();
+            }
+
             logger.info("Loaded tasks from file.");
             return tasks;
         } catch (IOException ex) {
@@ -113,11 +122,39 @@ public class TaskManager {
     }
 
     public void markDone(int id) {
+        boolean found = false;
+        for (Task task : tasks) {
+            if (task.getId() == id) {
+                task.setStatus(Status.DONE);
+                found = true;
+                break;
+            }
+        }
 
+        if (found) {
+            writeTasksToFile();
+            logger.info("Marked task with id " + id + " as DONE.");
+        } else {
+            logger.warning("Task with id " + id + " not found.");
+        }
     }
 
     public void markInProgress(int id) {
+        boolean found = false;
+        for (Task task : tasks) {
+            if (task.getId() == id) {
+                task.setStatus(Status.IN_PROGRESS);
+                found = true;
+                break;
+            }
+        }
 
+        if (found) {
+            writeTasksToFile();
+            logger.info("Marked task with id " + id + " as In-Progress.");
+        } else {
+            logger.warning("Task with id " + id + " not found.");
+        }
     }
 
 }

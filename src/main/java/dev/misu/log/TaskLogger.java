@@ -12,8 +12,14 @@ public class TaskLogger {
 
     static {
         try {
+            Logger rootLogger = Logger.getLogger("");
+            for (java.util.logging.Handler handler : rootLogger.getHandlers()) {
+                rootLogger.removeHandler(handler);
+            }
+
             FileHandler fileHandler = new FileHandler("task_manager.log", true);
             fileHandler.setFormatter(new SimpleFormatter());
+
             logger.addHandler(fileHandler);
             logger.setLevel(Level.ALL);
         } catch (IOException ex) {

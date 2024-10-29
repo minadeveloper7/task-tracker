@@ -18,6 +18,10 @@ public class Main {
 
         switch (command) {
             case "list":
+                if (args.length < 2) {
+                    printTasks(taskManager.getAllTasks());
+                    return;
+                }
                 String status = args[1];
                 switch (status) {
                     case "todo":
@@ -39,8 +43,8 @@ public class Main {
                 }
                 break;
             case "add":
-                if (!args[2].isEmpty()) {
-                    Task task = new Task(args[2]);
+                if (!args[1].isEmpty()) {
+                    Task task = new Task(args[1]);
                     taskManager.add(task);
                     System.out.println(task);
                 } else {
@@ -48,11 +52,11 @@ public class Main {
                 }
                 break;
             case "update":
-                if (isNumeric(args[2])) {
+                if (isNumeric(args[1])) {
 
-                    if (!args[3].isEmpty()) {
-                        taskManager.update(Integer.parseInt(args[2]), args[3]);
-                        System.out.printf("Task with id %d is updated!", Integer.parseInt(args[2]));
+                    if (!args[2].isEmpty()) {
+                        taskManager.update(Integer.parseInt(args[1]), args[2]);
+                        System.out.printf("Task with id %d is updated!", Integer.parseInt(args[1]));
                     }
 
                 } else {
