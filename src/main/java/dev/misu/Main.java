@@ -56,7 +56,6 @@ public class Main {
 
                     if (!args[2].isEmpty()) {
                         taskManager.update(Integer.parseInt(args[1]), args[2]);
-                        System.out.printf("Task with id %d is updated!", Integer.parseInt(args[1]));
                     }
 
                 } else {
@@ -66,7 +65,6 @@ public class Main {
             case "delete":
                 if (isNumeric(args[1])) {
                     taskManager.deleteTask(Integer.parseInt(args[1]));
-                    System.out.printf("Task with id of %d is deleted!", Integer.parseInt(args[1]));
                 } else {
                     System.out.println("Enter valid task id!");
                 }

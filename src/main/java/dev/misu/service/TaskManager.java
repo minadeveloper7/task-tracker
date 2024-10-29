@@ -34,6 +34,7 @@ public class TaskManager {
         task.setId(count);
         tasks.add(task);
         writeTasksToFile();
+        System.out.println(task);
         logger.info("Added task with id: " + task.getId());
     }
 
@@ -43,12 +44,14 @@ public class TaskManager {
             if (task.getId() == id) {
                 task.setDescription(description);
                 writeTasksToFile();
+                System.out.println("Updated task with id: " + id);
                 logger.info("Updated task with id: " + id);
                 found = true;
                 break;
             }
         }
         if (!found) {
+            System.out.println("Task with id " + id + " not found.");
             logger.warning("Task with id " + id + " not found.");
         }
         logger.info("Updated task with id: " + id);
@@ -58,8 +61,10 @@ public class TaskManager {
         boolean removed = tasks.removeIf(task -> task.getId() == id);
         if (removed) {
             writeTasksToFile();
+            System.out.println("Deleted task with id: " + id);
             logger.info("Deleted task with id: " + id);
         } else {
+            System.out.println("Task with id " + id + " not found for deletion.");
             logger.warning("Task with id " + id + " not found for deletion.");
         }
     }
@@ -133,8 +138,10 @@ public class TaskManager {
 
         if (found) {
             writeTasksToFile();
+            System.out.println("Marked task with id " + id + " as DONE.");
             logger.info("Marked task with id " + id + " as DONE.");
         } else {
+            System.out.println("Task with id " + id + " not found.");
             logger.warning("Task with id " + id + " not found.");
         }
     }
@@ -151,8 +158,10 @@ public class TaskManager {
 
         if (found) {
             writeTasksToFile();
+            System.out.println("Marked task with id " + id + " as In-Progress.");
             logger.info("Marked task with id " + id + " as In-Progress.");
         } else {
+            System.out.println("Task with id " + id + " not found.");
             logger.warning("Task with id " + id + " not found.");
         }
     }
