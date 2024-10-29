@@ -18,6 +18,11 @@ A simple command-line interface (CLI) application to help you track, manage, and
 
 ---
 
+## Project URL
+[Project URL](https://roadmap.sh/projects/task-tracker)
+
+---
+
 ## Features
 
 - **Add, Update, and Delete Tasks**
